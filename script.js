@@ -21,6 +21,9 @@ btn.addEventListener('click', function() {
         alert('Please select a number less than 100.');
     } else {
         createGrid(gridNumber * gridNumber);
+        // Update container width (based on box size, e.g., 20px)
+        const boxSize = 30; // adjust this to match your .box size in CSS
+        container.style.maxWidth = `${(gridNumber * boxSize) + 40}px`;
     }
 });
 
