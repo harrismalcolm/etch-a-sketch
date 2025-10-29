@@ -1,65 +1,58 @@
 const container = document.querySelector('#container');
-
-for (let i = 0; i < 256; i++) {
-    container.innerHTML += '<div class="box"></div>';
-}
-
-let boxes = document.querySelectorAll(".box");
 let lastMousePos = { x: 0, y: 0 };
 
+// Create default grid
+function createGrid(size = 256) {
+    container.innerHTML = '';
+    for (let i = 0; i < size; i++) {
+        container.innerHTML += '<div class="box"></div>';
+    }
+}
 
-//Generate new Grid
-let btn = document.querySelector('#grid');
+createGrid(); // initial grid
 
-btn.addEventListener('click', function(e) {
-    let gridNumber = prompt('Add the the number of squares you would like in this grid.');
-    if (gridNumber === isNaN) {
-        prompt('Please enter valid number')
-    } else if(gridNumber > 100) {
-        prompt('Please select a number less than 100');
+// Handle grid regeneration
+const btn = document.querySelector('#grid');
+btn.addEventListener('click', function() {
+    const gridNumber = parseInt(prompt('Enter number of squares (max 100):'));
+    if (isNaN(gridNumber)) {
+        alert('Please enter a valid number.');
+    } else if (gridNumber > 100) {
+        alert('Please select a number less than 100.');
     } else {
-        container.innerHTML = '';
-        for (let i = 0; i < gridNumber; i++) {
-            container.innerHTML += '<div class="box"></div>';          
-        }
+        createGrid(gridNumber);
     }
 });
 
-boxes.forEach(box => {
-    box.addEventListener('mousemove', function(e) {
-        const dx = e.clientX - lastMousePos.x;
-        const dy = e.clientY - lastMousePos.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+// 🧠 Use event delegation here
+container.addEventListener('mousemove', function(e) {
+    if (!e.target.classList.contains('box')) return;
 
-        // Normalize direction (to compute offset behind mouse)
-        const dirX = distance > 0 ? dx / distance : 0;
-        const dirY = distance > 0 ? dy / distance : 0;
+    const dx = e.clientX - lastMousePos.x;
+    const dy = e.clientY - lastMousePos.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Create trail pixel slightly behind the cursor
-        const trailPixel = document.createElement('div');
-        trailPixel.classList.add('trail-pixel');
-        
-        // Offset behind direction of movement (negative direction)
-        const offset = -8; // pixels behind mouse
-        trailPixel.style.left = `${e.clientX + dirX * offset + (Math.random() * 6 - 3)}px`;
-        trailPixel.style.top = `${e.clientY + dirY * offset + (Math.random() * 6 - 3)}px`;
+    const dirX = distance > 0 ? dx / distance : 0;
+    const dirY = distance > 0 ? dy / distance : 0;
 
-        e.target.appendChild(trailPixel);
+    const trailPixel = document.createElement('div');
+    trailPixel.classList.add('trail-pixel');
+    
+    const offset = -8;
+    trailPixel.style.left = `${e.clientX + dirX * offset + (Math.random() * 6 - 3)}px`;
+    trailPixel.style.top = `${e.clientY + dirY * offset + (Math.random() * 6 - 3)}px`;
 
-        // Optional visual feedback
-        e.target.style.background = "blue";
+    e.target.appendChild(trailPixel);
+    e.target.style.background = "blue";
 
-        // Fade out the pixel
+    setTimeout(() => {
+        trailPixel.style.opacity = '0';
+        trailPixel.style.transform = 'scale(0.5)';
         setTimeout(() => {
-            trailPixel.style.opacity = '0';
-            trailPixel.style.transform = 'scale(0.5)';
-            setTimeout(() => {
-                trailPixel.remove();
-            }, 800);
-        }, 100);
+            trailPixel.remove();
+        }, 800);
+    }, 100);
 
-        // Update last mouse position
-        lastMousePos.x = e.clientX;
-        lastMousePos.y = e.clientY;
-    });
+    lastMousePos.x = e.clientX;
+    lastMousePos.y = e.clientY;
 });
