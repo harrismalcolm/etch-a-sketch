@@ -7,6 +7,24 @@ for (let i = 0; i < 256; i++) {
 let boxes = document.querySelectorAll(".box");
 let lastMousePos = { x: 0, y: 0 };
 
+
+//Generate new Grid
+let btn = document.querySelector('#grid');
+
+btn.addEventListener('click', function(e) {
+    let gridNumber = prompt('Add the the number of squares you would like in this grid.');
+    if (gridNumber === isNaN) {
+        prompt('Please enter valid number')
+    } else if(gridNumber > 100) {
+        prompt('Please select a number less than 100');
+    } else {
+        container.innerHTML = '';
+        for (let i = 0; i < gridNumber; i++) {
+            container.innerHTML += '<div class="box"></div>';          
+        }
+    }
+});
+
 boxes.forEach(box => {
     box.addEventListener('mousemove', function(e) {
         const dx = e.clientX - lastMousePos.x;
