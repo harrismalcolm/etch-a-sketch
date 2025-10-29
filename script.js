@@ -20,7 +20,7 @@ btn.addEventListener('click', function() {
     } else if (gridNumber > 100) {
         alert('Please select a number less than 100.');
     } else {
-        createGrid(gridNumber);
+        createGrid(gridNumber * gridNumber);
     }
 });
 
