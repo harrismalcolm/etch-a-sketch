@@ -15,7 +15,7 @@
     position: absolute;
     width: 5px; /* Adjust pixel size as needed */
     height: 5px;
-    background-color: #FF00FF; /* Example color */
+    background-color: #000; /* Example color */
     opacity: 0.8;
     transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* For fading/scaling effect */
     border-radius: 1px; /* Optional: slightly rounded corners for a "softer" pixel */
